@@ -31,7 +31,7 @@ package
             cursor = new Cursor(printPos.x, printPos.y);
             FlxG.state.add(cursor);
 
-            function keyPressCallback(name:String, keyCode:Number):void {
+            function keyPressCallback(name:String):void {
                 var char:String = "";
                 if (name == "BACKSPACE") {
                     FlxG.state.remove(lastChar);

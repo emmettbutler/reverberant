@@ -15,7 +15,7 @@ package {
 
             var object:Object = _map[FlashEvent.keyCode];
             var keyCode:Number = _lookup[object.name];
-            this.callback(object.name, keyCode);
+            this.callback(object.name);
         }
     }
 }
