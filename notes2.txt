@@ -1,0 +1,5 @@
+good morning
+press ENTER to clock in
+the time is 9:18 AM
+what are you planning to work on today?
+<type in something>
