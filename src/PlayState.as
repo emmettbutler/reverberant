@@ -7,6 +7,8 @@ package
         public var autoBox:AutoTypeTextBox;
 
         override public function create():void{
+            FlxG.bgColor = 0xffbbbbbb;
+
             textBox = new TextInputBox(new FlxPoint(10, 10), 600);
             FlxG.keys = new Inputter(textBox._callback);
 

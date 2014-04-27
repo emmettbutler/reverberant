@@ -21,10 +21,10 @@ package
             keyMap["COMMA"] = ",";
             keyMap["SPACE"] = " ";
             keyMap["PERIOD"] = ".";
-            keyMap["CONTROL"] = "";
             keyMap["QUOTE"] = "'";
             keyMap["SEMICOLON"] = ";";
             keyMap["NUMPADSLASH"] = "/";
+            keyMap["ENTER"] = "\n";
 
             printPos = origin;
 
@@ -38,11 +38,11 @@ package
                     lastChar = lastChar.prev;
                     printPos.x = lastChar.x + charWidth;
                     printPos.y = lastChar.y;
-                } else if (name in keyMap) {
-                    char = keyMap[name];
                 } else if (name == "ENTER") {
                     printPos.y += lineHeight;
                     printPos.x = 10;
+                } else if (name in keyMap) {
+                    char = keyMap[name];
                 } else {
                     char = name;
                 }
