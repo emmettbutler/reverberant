@@ -14,7 +14,7 @@ package
             textBox = new TextInputBox(new FlxPoint(10, 40), 600);
             FlxG.keys = new Inputter(textBox._callback);
 
-            autoBox = new AutoTypeTextBox(new FlxPoint(10, 30), 600, "THIS IS A TEST");
+            autoBox = new AutoTypeTextBox(new FlxPoint(10, 30), 600, "TYPE '1' TO START YOUR DAY");
 
             titleText = new StaticTextBox(new FlxPoint(10, 10), FlxG.width, "PANIC OPERATING SYSTEM v1.1.3");
             titleText.color = 0xff000000;

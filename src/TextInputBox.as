@@ -10,7 +10,7 @@ package
         public var keyMap:Array;
         public var printPos:FlxPoint;
         public var lineHeight:Number = 20;
-        public var charWidth:Number = 10;
+        public var charWidth:Number = 8;
         public var width:Number = 600;
         public var _callback:Function;
 
