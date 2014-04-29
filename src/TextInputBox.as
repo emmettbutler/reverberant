@@ -58,6 +58,7 @@ package
                 }
                 if (printPos.x > width - charWidth) {
                     printPos.x = 10;
+                    printPos.y += lineHeight;
                 }
 
                 cursor.x = printPos.x;
