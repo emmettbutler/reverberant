@@ -18,3 +18,7 @@ show score of missed/correct words at the end
 show a segmented timer to count time for typing each word
 for a nonpoem line if time is up before ENTER, say "time up", wait a moment, then continue
 for a poem line, finish the line automatically, then do the same
+
+some of the lines shown to type should be from the poem
+especially early on
+mix these in with normal lines (assembly instructions??)
