@@ -10,7 +10,11 @@ every once in a while, replace typed text with a line from the poem as the user 
 for poem lines, supply random garbage that's the same length as the line
 as we get farther into the poem, decrease the time limit per word
 by the "terror" line, the pace should be insane and totally unplayable
-all of the words on the screen except the typed text should slowly fade to invisible by the time the terror line happens
+all of the words on the screen except the typed text should slowly fade to invisible by the terror line
 and then wait
 and then quickly return for the end of the game
 show score of missed/correct words at the end
+
+show a segmented timer to count time for typing each word
+for a nonpoem line if time is up before ENTER, say "time up", wait a moment, then continue
+for a poem line, finish the line automatically, then do the same
