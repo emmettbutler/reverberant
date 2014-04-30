@@ -11,14 +11,17 @@ package
 
         public var titleText:StaticTextBox;
 
-        public var cur_timelimit:Number = 30 * 5;
+        public var cur_timelimit:Number = 30 * 20;
 
         public var frame_lifetime:Number = 0;
+
+        public var dbgText:FlxText;
 
         override public function create():void{
             FlxG.bgColor = 0xffbbbbbb;
 
             textBox = new TextInputBox(new FlxPoint(10, 40), 600);
+            textBox.enterCallback = this.enterCallback;
             FlxG.keys = new Inputter(textBox.keyPressCallback);
 
             lines = new LineGenerator();
@@ -32,6 +35,20 @@ package
 
             time_bar = new TimeCounter(new FlxPoint(FlxG.width/2 - 100, FlxG.height - 50), 200);
             time_bar.set_time(cur_timelimit);
+
+            dbgText = new FlxText(200, 200, FlxG.width, "");
+            add(dbgText);
+        }
+
+        public function enterCallback(content:String):void {
+            textBox.erase();
+            //dbgText.text = "content: " + content + "\nprinted: " + autoBox.printed_string;
+            if (content == autoBox.printed_string) {
+                autoBox.typeString("   CORRECT");
+            } else {
+                autoBox.typeString("   WRONG");
+            }
+            this.advance();
         }
 
         override public function update():void{
@@ -42,10 +59,14 @@ package
             time_bar.update();
 
             if (time_bar.frames_remaining == 0) {
-                autoBox.erase();
-                autoBox.typeString(lines.get_next());
-                time_bar.set_time(cur_timelimit - 20);
+                this.advance();
             }
+        }
+
+        public function advance():void {
+            autoBox.erase();
+            autoBox.typeString(lines.get_next());
+            time_bar.set_time(cur_timelimit - 20);
         }
     }
 }

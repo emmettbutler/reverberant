@@ -8,11 +8,13 @@ package
         public var lastChar:TextNode = null;
         public var cursor:Cursor;
         public var keyMap:Array;
+        public var printed_string:String = "";
         public var printPos:FlxPoint;
         public var lineHeight:Number = 20;
         public var charWidth:Number = 8;
         public var width:Number = 600;
         public var _callback:Function;
+        public var enterCallback:Function = null;
         public var origin:FlxPoint;
 
         public var dbgText:FlxText;
@@ -61,9 +63,15 @@ package
                 lastChar = lastChar.prev;
                 printPos.x = lastChar.x + charWidth;
                 printPos.y = lastChar.y;
+                printed_string = printed_string.slice(0, -1);
             } else if (name == "ENTER") {
                 printPos.y += lineHeight;
                 printPos.x = 10;
+                if (this.enterCallback != null) {
+                    this.enterCallback(this.printed_string);
+                } else {
+                    this.printed_string += "\n";
+                }
             } else if (name in keyMap) {
                 char = keyMap[name];
             } else {
@@ -71,6 +79,7 @@ package
             }
 
             if (char != "") {
+                printed_string += char;
                 var txt:TextNode = new TextNode(printPos.x, printPos.y, 30, char);
                 txt.setFormat("Perfect DOS VGA 437",14,0xffffffff,"left");
                 FlxG.state.add(txt);
@@ -97,6 +106,7 @@ package
                 FlxG.state.remove(cur);
                 cur = next;
             }
+            printed_string = "";
             printPos.x = origin.x;
             printPos.y = origin.y;
             cursor.x = printPos.x;

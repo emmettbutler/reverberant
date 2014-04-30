@@ -36,7 +36,7 @@ package {
         override public function update():void {
             this.frame_lifetime += 1;
 
-            dbgText.text = "running: " + this.running + "\ncharCounter: " + this.charCounter + "\ntoType: " + this.toType + "\nframes: " + this.frame_lifetime + "\norigin: " + this.origin.x + "," + this.origin.y;
+            dbgText.text = "running: " + this.running + "\ncharCounter: " + this.charCounter + "\ntoType: " + this.toType + "\nframes: " + this.frame_lifetime + "\norigin: " + this.origin.x + "," + this.origin.y + "\nprinted: " + this.printed_string;
             if (this.running) {
                 if (this.frame_lifetime % this.speed == 0) {
                     this.pressKey(this.toType.charAt(this.charCounter));
