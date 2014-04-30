@@ -1,5 +1,16 @@
-good morning
-press ENTER to clock in
-the time is 9:18 AM
-what are you planning to work on today?
-<type in something>
+LOGIN:
+<player types anything and ENTER to login>
+let's start
+type each word before time runs out
+<player types the shown word, presses enter>
+<word length is enforced, so player has to type at least n characters before enter will work>
+<negative feedback if errors, positive otherwise>
+continue doing this
+every once in a while, replace typed text with a line from the poem as the user types
+for poem lines, supply random garbage that's the same length as the line
+as we get farther into the poem, decrease the time limit per word
+by the "terror" line, the pace should be insane and totally unplayable
+all of the words on the screen except the typed text should slowly fade to invisible by the time the terror line happens
+and then wait
+and then quickly return for the end of the game
+show score of missed/correct words at the end
