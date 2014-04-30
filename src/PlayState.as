@@ -5,6 +5,7 @@ package
     public class PlayState extends FlxState {
         public var textBox:TextInputBox;
         public var autoBox:AutoTypeTextBox;
+        public var lines:LineGenerator;
 
         public var time_bar:TimeCounter;
 
@@ -19,6 +20,8 @@ package
 
             textBox = new TextInputBox(new FlxPoint(10, 40), 600);
             FlxG.keys = new Inputter(textBox.keyPressCallback);
+
+            lines = new LineGenerator();
 
             autoBox = new AutoTypeTextBox(new FlxPoint(10, 30), 600, "TYPE '1' TO START YOUR DAY");
             autoBox.speed = 3;
@@ -40,7 +43,7 @@ package
 
             if (time_bar.frames_remaining == 0) {
                 autoBox.erase();
-                autoBox.typeString("HERE COMES ANOTHER");
+                autoBox.typeString(lines.get_next());
                 time_bar.set_time(cur_timelimit - 20);
             }
         }
