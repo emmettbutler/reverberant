@@ -15,9 +15,13 @@ package
         public var width:Number = 600;
         public var _callback:Function;
         public var enterCallback:Function = null;
+        public var enterPoemCallback:Function = null;
         public var origin:FlxPoint;
         public var charCounter:Number = 0;
         public var lines:LineGenerator;
+
+        public var use_poem_line:Boolean = false;
+        public var current_poem_line:String = "";
 
         public var dbgText:FlxText;
 
@@ -62,13 +66,25 @@ package
         }
 
         public function keyPressCallback(name:String, auto:Boolean=false):void {
-            if (this.lines != null && this.lines.poem_counter > 10) {
-                name = this.lines.get_current_poem_line().toUpperCase().charAt(charCounter);
+            if (this.use_poem_line && name != "ENTER") {
+                name = this.current_poem_line.charAt(charCounter);
             }
             if (!auto) {
                 charCounter++;
             }
 
+            this.printInput(name);
+        }
+
+        public function lineBreak(edit_str:Boolean=true):void {
+            if (edit_str) {
+                this.printed_string += "\n";
+            }
+            printPos.y += lineHeight;
+            printPos.x = 10;
+        }
+
+        public function printInput(name:String):void {
             var char:String = "";
             if (name == "BACKSPACE") {
                 FlxG.state.remove(lastChar);
@@ -77,12 +93,12 @@ package
                 printPos.y = lastChar.y;
                 printed_string = printed_string.slice(0, -1);
             } else if (name == "ENTER") {
-                printPos.y += lineHeight;
-                printPos.x = 10;
-                if (this.enterCallback != null) {
+                if (this.use_poem_line && this.enterPoemCallback != null) {
+                    this.enterPoemCallback(this.printed_string);
+                } else if (!this.use_poem_line && this.enterCallback != null) {
                     this.enterCallback(this.printed_string);
                 } else {
-                    this.printed_string += "\n";
+                    this.lineBreak();
                 }
             } else if (name in keyMap) {
                 char = keyMap[name];
@@ -102,15 +118,18 @@ package
                 lastChar = txt;
             }
             if (printPos.x > width - charWidth) {
-                printPos.x = 10;
-                printPos.y += lineHeight;
+                this.lineBreak(false);
             }
 
             cursor.x = printPos.x;
             cursor.y = printPos.y;
         }
 
-        public function printInput(name:String):void {
+        public function complete():void {
+            this.erase();
+            for (var i:int = 0; i < this.current_poem_line.length; i++) {
+                this.keyPressCallback(this.current_poem_line.charAt(i));
+            }
         }
 
         public function erase():void {

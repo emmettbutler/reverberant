@@ -29,6 +29,7 @@ package
 
             textBox = new TextInputBox(new FlxPoint(10, 50), 600, lines);
             textBox.enterCallback = this.enterCallback;
+            textBox.enterPoemCallback = this.enterPoemCallback;
             FlxG.keys = new Inputter(textBox.keyPressCallback);
 
             autoBox = new AutoTypeTextBox(new FlxPoint(10, 30), 600, "TYPE '1' TO START YOUR DAY");
@@ -45,13 +46,12 @@ package
             time_bar = new TimeCounter(new FlxPoint(FlxG.width/2 - 100, FlxG.height - 50), 200);
             time_bar.set_time(cur_timelimit);
 
-            dbgText = new FlxText(200, 200, FlxG.width, "");
+            dbgText = new FlxText(100, 80, FlxG.width, "");
             add(dbgText);
         }
 
         public function enterCallback(content:String):void {
             textBox.erase();
-            //dbgText.text = "content: " + content + "\nprinted: " + autoBox.printed_string;
             if (content == autoBox.printed_string) {
                 autoBox.typeString("   GOOD");
                 correct_count++;
@@ -63,7 +63,17 @@ package
             this.advance();
         }
 
+        public function enterPoemCallback(content:String):void {
+            if (this.timeout_time == 0) {
+                this.timeout_time = this.frame_lifetime;
+            }
+            this.textBox.complete();
+            this.lines.poem_counter++;
+        }
+
         override public function update():void{
+            dbgText.text = "running: " + autoBox.running + "\ncharCounter: " + autoBox.charCounter + "\ntoType: " + autoBox.toType + "\nframes: " + autoBox.frame_lifetime + "\norigin: " + autoBox.origin.x + "," + autoBox.origin.y + "\nprinted: " + autoBox.printed_string + "\ntimeout_time: " + this.timeout_time + "\nuse_poem_line: " + this.textBox.use_poem_line + "\ncurrent_poem_line: " + this.textBox.current_poem_line;
+
             this.frame_lifetime++;
 
             super.update();
@@ -85,6 +95,27 @@ package
             autoBox.erase();
             autoBox.typeString(lines.get_next().toUpperCase());
             time_bar.set_time(cur_timelimit - 12);
+
+            if (this.lines != null){
+                if (this.lines.poem_counter > 35) {
+                    this.textBox.use_poem_line = true;
+                } else if (this.lines.poem_counter > 25) {
+                    if(Math.floor(Math.random() * 3) == 1) {
+                        this.textBox.use_poem_line = true;
+                    }
+                } else if (this.lines.poem_counter > 10) {
+                    if(Math.floor(Math.random() * 5) == 1) {
+                        this.textBox.use_poem_line = true;
+                    }
+                } else {
+                    this.textBox.use_poem_line = false;
+                }
+            } else {
+                this.textBox.use_poem_line = false;
+            }
+            if (this.textBox.use_poem_line) {
+                this.textBox.current_poem_line = this.lines.get_next_poem_line().toUpperCase();
+            }
         }
     }
 }
