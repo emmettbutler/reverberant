@@ -33,6 +33,12 @@ package {
             this.total_frames = frames;
         }
 
+        public function set_color(color:int):void {
+            for (var i:int = 0; i < this.pieces.length; i++) {
+                this.pieces[i].color = color;
+            }
+        }
+
         public function update():void {
             this.frame_lifetime++;
             if (this.frames_remaining > 0) {
