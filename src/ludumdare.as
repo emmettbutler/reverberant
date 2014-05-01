@@ -8,7 +8,7 @@ package
     {
         public function ludumdare()
         {
-            super(640,480,MenuState,1);
+            super(320,240,MenuState,2);
         }
     }
 }

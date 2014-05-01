@@ -3,14 +3,13 @@ package {
 
     public class AutoTypeTextBox extends TextInputBox {
         public var running:Boolean = true;
-        public var charCounter:int = 0;
         public var frame_lifetime:int = 0;
         public var toType:String;
         public var invertedKeys:Array;
         public var speed:Number = 20;
 
         public function AutoTypeTextBox(origin:FlxPoint, width:Number, toType:String) {
-            super(origin, width);
+            super(origin, width, null);
             this.toType = toType;
 
             this.invertedKeys = new Array();
@@ -24,7 +23,7 @@ package {
             if (name in this.invertedKeys) {
                 name = this.invertedKeys[name];
             }
-            this.keyPressCallback(name);
+            this.keyPressCallback(name, true);
         }
 
         public function typeString(toType:String):void {

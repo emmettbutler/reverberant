@@ -16,13 +16,16 @@ package
         public var _callback:Function;
         public var enterCallback:Function = null;
         public var origin:FlxPoint;
+        public var charCounter:Number = 0;
+        public var lines:LineGenerator;
 
         public var dbgText:FlxText;
 
-        public function TextInputBox(origin:FlxPoint, width:Number) {
+        public function TextInputBox(origin:FlxPoint, width:Number, lines:LineGenerator) {
             this.width = width;
             this.origin = origin;
             this.printPos = new FlxPoint(origin.x, origin.y);
+            this.lines = lines;
 
             dbgText = new FlxText(100, 100, FlxG.width, "");
             dbgText.color = 0xffffffff;
@@ -35,6 +38,8 @@ package
             keyMap["QUOTE"] = "'";
             keyMap["SEMICOLON"] = ";";
             keyMap["NUMPADSLASH"] = "/";
+            keyMap["RBRACKET"] = "]";
+            keyMap["LBRACKET"] = "[";
             keyMap["ONE"] = "1";
             keyMap["TWO"] = "2";
             keyMap["THREE"] = "3";
@@ -56,7 +61,14 @@ package
             FlxG.state.add(cursor);
         }
 
-        public function keyPressCallback(name:String):void {
+        public function keyPressCallback(name:String, auto:Boolean=false):void {
+            if (this.lines != null && this.lines.poem_counter > 10) {
+                name = this.lines.get_current_poem_line().toUpperCase().charAt(charCounter);
+            }
+            if (!auto) {
+                charCounter++;
+            }
+
             var char:String = "";
             if (name == "BACKSPACE") {
                 FlxG.state.remove(lastChar);
@@ -98,6 +110,9 @@ package
             cursor.y = printPos.y;
         }
 
+        public function printInput(name:String):void {
+        }
+
         public function erase():void {
             var cur:TextNode = this.lastChar;
             var next:TextNode;
@@ -111,6 +126,7 @@ package
             printPos.y = origin.y;
             cursor.x = printPos.x;
             cursor.y = printPos.y;
+            charCounter = 0;
         }
 
         public function update():void {

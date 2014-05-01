@@ -10,8 +10,13 @@ package
         public var time_bar:TimeCounter;
 
         public var titleText:StaticTextBox;
+        public var scoreText:StaticTextBox;
 
-        public var cur_timelimit:Number = 30 * 20;
+        public var cur_timelimit:Number = 30 * 17;
+        public var correct_count:Number = 0;
+        public var incorrect_count:Number = 0;
+
+        public var timeout_time:Number = 0;
 
         public var frame_lifetime:Number = 0;
 
@@ -20,18 +25,22 @@ package
         override public function create():void{
             FlxG.bgColor = 0xffbbbbbb;
 
-            textBox = new TextInputBox(new FlxPoint(10, 40), 600);
+            lines = new LineGenerator();
+
+            textBox = new TextInputBox(new FlxPoint(10, 50), 600, lines);
             textBox.enterCallback = this.enterCallback;
             FlxG.keys = new Inputter(textBox.keyPressCallback);
-
-            lines = new LineGenerator();
 
             autoBox = new AutoTypeTextBox(new FlxPoint(10, 30), 600, "TYPE '1' TO START YOUR DAY");
             autoBox.speed = 3;
 
-            titleText = new StaticTextBox(new FlxPoint(10, 10), FlxG.width, "PANIC OPERATING SYSTEM v1.1.3");
+            titleText = new StaticTextBox(new FlxPoint(10, 10), FlxG.width, "YOUR JOB IS TO TYPE");
             titleText.color = 0xff000000;
             add(titleText);
+
+            scoreText = new StaticTextBox(new FlxPoint(FlxG.width-100, 10), FlxG.width, "0/0");
+            scoreText.color = 0xff000000;
+            add(scoreText);
 
             time_bar = new TimeCounter(new FlxPoint(FlxG.width/2 - 100, FlxG.height - 50), 200);
             time_bar.set_time(cur_timelimit);
@@ -44,29 +53,38 @@ package
             textBox.erase();
             //dbgText.text = "content: " + content + "\nprinted: " + autoBox.printed_string;
             if (content == autoBox.printed_string) {
-                autoBox.typeString("   CORRECT");
+                autoBox.typeString("   GOOD");
+                correct_count++;
             } else {
-                autoBox.typeString("   WRONG");
+                autoBox.typeString("   BUG");
+                incorrect_count++;
             }
+            this.scoreText.text = correct_count + "/" + incorrect_count;
             this.advance();
         }
 
         override public function update():void{
             this.frame_lifetime++;
+
             super.update();
             textBox.update();
             autoBox.update();
             time_bar.update();
 
-            if (time_bar.frames_remaining == 0) {
-                this.advance();
+            if (time_bar.frames_remaining == 0 && this.timeout_time == 0) {
+                this.timeout_time = this.frame_lifetime;
+            }
+
+            if (this.timeout_time != 0 && this.frame_lifetime - this.timeout_time > 90) {
+                this.enterCallback(this.textBox.printed_string);
             }
         }
 
         public function advance():void {
+            this.timeout_time = 0;
             autoBox.erase();
-            autoBox.typeString(lines.get_next());
-            time_bar.set_time(cur_timelimit - 20);
+            autoBox.typeString(lines.get_next().toUpperCase());
+            time_bar.set_time(cur_timelimit - 12);
         }
     }
 }
