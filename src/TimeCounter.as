@@ -7,6 +7,7 @@ package {
         public var total_frames:Number;
 
         public var origin:FlxPoint;
+        public var running:Boolean = true;
         public var width:Number;
 
         public var pieces:Array;
@@ -40,6 +41,7 @@ package {
         }
 
         public function update():void {
+            if (!this.running) return;
             this.frame_lifetime++;
             if (this.frames_remaining > 0) {
                 this.frames_remaining--;

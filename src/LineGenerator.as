@@ -125,6 +125,7 @@ package {
                 "you'll become subhuman"
             );
             this.poem_counter = 0;
+            //this.poem_counter = this.poem_lines.length - 5;
         }
 
         public function get_next():String {

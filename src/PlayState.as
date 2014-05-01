@@ -16,18 +16,25 @@ package
 
         public var bg:FlxSprite;
 
-        public var cur_timelimit:Number = 30 * 17;
+        public var cur_timelimit:Number = 30 * 15;
         public var correct_count:Number = 0;
         public var incorrect_count:Number = 0;
 
         public var timeout_time:Number = 0;
         public var last_advance_time:Number = 0;
         public var frame_lifetime:Number = 0;
+        public var end_time:Number = 0;
 
         public var box_color:int = 0xffcccccc;
         public var shadow_color:int = 0xffaaaaaa;
 
+        public var player_name:String;
+
         public var dbgText:FlxText;
+
+        public function PlayState(player_name:String) {
+            this.player_name = player_name;
+        }
 
         override public function create():void{
             FlxG.bgColor = 0xff0000ff;
@@ -52,7 +59,7 @@ package
             FlxG.keys = new Inputter(textBox.keyPressCallback);
 
             autoBox = new AutoTypeTextBox(new FlxPoint(10, 50), 600,
-                                          "TYPE '1' TO START YOUR DAY");
+                                          "WELCOME. ENTER THIS LINE");
             autoBox.speed = 3;
 
             titleText = new StaticTextBox(new FlxPoint(10, 10), FlxG.width,
@@ -61,12 +68,12 @@ package
             add(titleText);
 
             promptText = new StaticTextBox(new FlxPoint(10, 30), FlxG.width,
-                                          "prompt:");
+                                           "prompt:");
             promptText.color = box_color;
             add(promptText);
 
             instText = new StaticTextBox(new FlxPoint(10, FlxG.height-65), FlxG.width,
-                                          "Type the prompt text before time runs out and press enter.\nCompany policy prohibits you from writing software bugs.");
+                                         "Type the prompt text before time runs out and press enter.\nCompany policy prohibits you from writing software bugs.");
             instText.color = 0xff444444;
             add(instText);
 
@@ -94,12 +101,14 @@ package
             time_bar = new TimeCounter(new FlxPoint(FlxG.width/2 - 100,
                                        FlxG.height - 85), 200);
             time_bar.set_time(cur_timelimit);
+            time_bar.running = false;
 
             dbgText = new FlxText(100, 80, FlxG.width, "");
             add(dbgText);
         }
 
         public function enterCallback(content:String):void {
+            if (this.end_time != 0) return;
             textBox.erase();
             if (content == autoBox.printed_string) {
                 notification.set_note("TESTS PASS", 0xff00ff00);
@@ -147,13 +156,23 @@ package
             if (this.last_advance_time != 0 && this.frame_lifetime - this.last_advance_time > 40) {
                 this.time_bar.set_color(0xffffffff);
             }
+
+            if (this.end_time != 0 && this.frame_lifetime - this.end_time > 260) {
+                FlxG.switchState(new EndState(incorrect_count, player_name));
+            }
         }
 
         public function advance():void {
-            this.timeout_time = 0;
             autoBox.erase();
-            autoBox.typeString(lines.get_next().toUpperCase());
             time_bar.set_time(cur_timelimit - 22);
+            if (this.lines.poem_counter == this.lines.poem_lines.length) {
+                time_bar.running = false;
+                end_time = this.frame_lifetime;
+                return;
+            }
+            time_bar.running = true;
+            this.timeout_time = 0;
+            autoBox.typeString(lines.get_next().toUpperCase());
 
             if (this.lines != null){
                 if (this.lines.poem_counter > 42) {
@@ -171,8 +190,10 @@ package
                 this.textBox.use_poem_line = false;
             }
             if (this.textBox.use_poem_line) {
-                this.textBox.current_poem_line = this.lines.get_next_poem_line()
-                    .toUpperCase();
+                var line:String = this.lines.get_next_poem_line();
+                if (line != null) {
+                    this.textBox.current_poem_line = line.toUpperCase();
+                }
             } else {
                 this.textBox.current_poem_line = "";
             }
