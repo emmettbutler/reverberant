@@ -31,7 +31,8 @@ package
                 "YOUR PINK SLIP IS COMING",
                 "YOU ARE ALONE",
                 "THE THINGS YOU FEAR ARE REAL",
-                "UNACCEPTABLE"
+                "UNACCEPTABLE",
+                "YOU NEED TO WORK ON YOUR FOCUS"
             );
             var commentString:String = comments[Math.floor(Math.random() * comments.length)];
 

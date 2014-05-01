@@ -44,7 +44,7 @@ package
             add(byline);
 
             titleText = new StaticTextBox(new FlxPoint(0, FlxG.height/2), FlxG.width,
-                                          "PLEASE ENTER YOUR USERNAME");
+                                          "PLEASE ENTER YOUR FIRST NAME");
             titleText.color = 0xffffffff;
             titleText.alignment = "center";
             add(titleText);

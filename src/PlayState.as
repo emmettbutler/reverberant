@@ -189,7 +189,8 @@ package
 
         public function advance():void {
             autoBox.erase();
-            time_bar.set_time(cur_timelimit - 26);
+            cur_timelimit -= 2;
+            time_bar.set_time(cur_timelimit);
             if (this.lines.poem_counter == this.lines.poem_lines.length) {
                 time_bar.running = false;
                 end_time = this.frame_lifetime;
