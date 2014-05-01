@@ -19,6 +19,7 @@ package
         public var origin:FlxPoint;
         public var charCounter:Number = 0;
         public var lines:LineGenerator;
+        public var allows_linebreaks:Boolean = true;
 
         public var use_poem_line:Boolean = false;
         public var current_poem_line:String = "";
@@ -88,16 +89,18 @@ package
             var char:String = "";
             if (name == "BACKSPACE") {
                 FlxG.state.remove(lastChar);
-                lastChar = lastChar.prev;
-                printPos.x = lastChar.x + charWidth;
-                printPos.y = lastChar.y;
+                if (printed_string.length != 0 && lastChar != null && lastChar.prev != null) {
+                    lastChar = lastChar.prev;
+                    printPos.x = lastChar.x + charWidth;
+                    printPos.y = lastChar.y;
+                }
                 printed_string = printed_string.slice(0, -1);
             } else if (name == "ENTER") {
                 if (this.use_poem_line && this.enterPoemCallback != null) {
                     this.enterPoemCallback(this.printed_string);
                 } else if (!this.use_poem_line && this.enterCallback != null) {
                     this.enterCallback(this.printed_string);
-                } else {
+                } else if (this.allows_linebreaks){
                     this.lineBreak();
                 }
             } else if (name in keyMap) {
@@ -105,20 +108,27 @@ package
             } else {
                 char = name;
             }
+            if (char.length > 1) {
+                char = "";
+            }
 
             if (char != "") {
-                printed_string += char;
-                var txt:TextNode = new TextNode(printPos.x, printPos.y, 30, char);
-                txt.setFormat("Perfect DOS VGA 437",14,0xffffffff,"left");
-                FlxG.state.add(txt);
-                printPos.x += charWidth;
-                if (lastChar != null) {
-                    lastChar.setNext(txt);
+                if (printPos.x < width - charWidth || this.allows_linebreaks) {
+                    printed_string += char;
+                    var txt:TextNode = new TextNode(printPos.x, printPos.y, 30, char);
+                    txt.setFormat("Perfect DOS VGA 437",14,0xffffffff,"left");
+                    FlxG.state.add(txt);
+                    printPos.x += charWidth;
+                    if (lastChar != null) {
+                        lastChar.setNext(txt);
+                    }
+                    lastChar = txt;
                 }
-                lastChar = txt;
             }
             if (printPos.x > width - charWidth) {
-                this.lineBreak(false);
+                if (this.allows_linebreaks) {
+                    this.lineBreak(false);
+                }
             }
 
             cursor.x = printPos.x;

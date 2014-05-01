@@ -7,9 +7,10 @@ package
         public var is_disappearing:Boolean = false;
         public var _origin:FlxPoint;
 
-        public function Notification(txt:String) {
-            this._origin = new FlxPoint(FlxG.width-50, 10);
+        public function Notification(origin:FlxPoint, txt:String) {
+            this._origin = new FlxPoint(origin.x, origin.y);
             super(this._origin, FlxG.width, txt);
+            this.alignment = "center";
         }
 
         override public function update():void {

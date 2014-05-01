@@ -14,6 +14,8 @@ package
         public var promptText:StaticTextBox;
         public var instText:StaticTextBox;
 
+        public var bg:FlxSprite;
+
         public var cur_timelimit:Number = 30 * 17;
         public var correct_count:Number = 0;
         public var incorrect_count:Number = 0;
@@ -22,19 +24,31 @@ package
         public var last_advance_time:Number = 0;
         public var frame_lifetime:Number = 0;
 
+        public var box_color:int = 0xffcccccc;
+        public var shadow_color:int = 0xffaaaaaa;
+
         public var dbgText:FlxText;
 
         override public function create():void{
-            FlxG.bgColor = 0xffbbbbbb;
+            FlxG.bgColor = 0xff0000ff;
+
+            var shadow:FlxSprite = new FlxSprite(7, 7);
+            shadow.makeGraphic(320-10, 240-10, 0xff000000);
+            add(shadow);
+
+            bg = new FlxSprite(5, 5);
+            bg.makeGraphic(320-10, 240-10, 0xff999999);
+            add(bg);
 
             lines = new LineGenerator();
 
-            notification = new Notification("");
+            notification = new Notification(new FlxPoint(0, FlxG.height/2), "");
             add(notification);
 
             textBox = new TextInputBox(new FlxPoint(10, 70), 600, lines);
             textBox.enterCallback = this.enterCallback;
             textBox.enterPoemCallback = this.enterPoemCallback;
+            textBox.erase();
             FlxG.keys = new Inputter(textBox.keyPressCallback);
 
             autoBox = new AutoTypeTextBox(new FlxPoint(10, 50), 600,
@@ -48,7 +62,7 @@ package
 
             promptText = new StaticTextBox(new FlxPoint(10, 30), FlxG.width,
                                           "prompt:");
-            promptText.color = 0xff999999;
+            promptText.color = box_color;
             add(promptText);
 
             instText = new StaticTextBox(new FlxPoint(10, FlxG.height-65), FlxG.width,
@@ -56,10 +70,26 @@ package
             instText.color = 0xff444444;
             add(instText);
 
+            var score_shadow:FlxSprite = new FlxSprite(FlxG.width-100+2, 10+2);
+            score_shadow.makeGraphic(42, 17, shadow_color);
+            add(score_shadow);
+
+            var score_bg:FlxSprite = new FlxSprite(FlxG.width-100, 10);
+            score_bg.makeGraphic(42, 17, box_color);
+            add(score_bg);
+
             scoreText = new StaticTextBox(new FlxPoint(FlxG.width-100, 10),
                                           FlxG.width, "0/0");
             scoreText.color = 0xff000000;
             add(scoreText);
+
+            var bar_shadow:FlxSprite = new FlxSprite((FlxG.width/2-105)+2, (FlxG.height-88)+2);
+            bar_shadow.makeGraphic(210, 21, shadow_color);
+            add(bar_shadow);
+
+            var bar_bg:FlxSprite = new FlxSprite(FlxG.width/2 - 105, FlxG.height - 88);
+            bar_bg.makeGraphic(210, 21, box_color);
+            add(bar_bg);
 
             time_bar = new TimeCounter(new FlxPoint(FlxG.width/2 - 100,
                                        FlxG.height - 85), 200);
@@ -72,11 +102,11 @@ package
         public function enterCallback(content:String):void {
             textBox.erase();
             if (content == autoBox.printed_string) {
-                notification.set_note("GOOD", 0xff00ff00);
+                notification.set_note("TESTS PASS", 0xff00ff00);
                 time_bar.set_color(0xff00ff00);
                 correct_count++;
             } else {
-                notification.set_note("BUG", 0xffff0000);
+                notification.set_note("BUG DETECTED", 0xffff0000);
                 time_bar.set_color(0xffff0000);
                 incorrect_count++;
             }
