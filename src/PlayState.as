@@ -3,6 +3,10 @@ package
     import org.flixel.*;
 
     public class PlayState extends FlxState {
+        [Embed(source="../assets/office.mp3")] private var SndBG:Class;
+        [Embed(source="../assets/negative.mp3")] private var SndWrong:Class;
+        [Embed(source="../assets/positive.mp3")] private var SndRight:Class;
+
         public var textBox:TextInputBox;
         public var autoBox:AutoTypeTextBox;
         public var lines:LineGenerator;
@@ -16,7 +20,7 @@ package
 
         public var bg:FlxSprite;
 
-        public var cur_timelimit:Number = 30 * 15;
+        public var cur_timelimit:Number = 30 * 14;
         public var correct_count:Number = 0;
         public var incorrect_count:Number = 0;
 
@@ -37,6 +41,7 @@ package
         }
 
         override public function create():void{
+            FlxG.playMusic(SndBG);
             FlxG.bgColor = 0xff0000ff;
 
             var shadow:FlxSprite = new FlxSprite(7, 7);
@@ -63,7 +68,7 @@ package
             autoBox.speed = 3;
 
             titleText = new StaticTextBox(new FlxPoint(10, 10), FlxG.width,
-                                          "YOUR JOB IS TO TYPE");
+                                          "EVERYTHING IS FINE");
             titleText.color = 0xff000000;
             add(titleText);
 
@@ -109,14 +114,17 @@ package
 
         public function enterCallback(content:String):void {
             if (this.end_time != 0) return;
+            if (this.autoBox.running) return;
             textBox.erase();
             if (content == autoBox.printed_string) {
                 notification.set_note("TESTS PASS", 0xff00ff00);
                 time_bar.set_color(0xff00ff00);
+                FlxG.play(SndRight, .3);
                 correct_count++;
             } else {
                 notification.set_note("BUG DETECTED", 0xffff0000);
                 time_bar.set_color(0xffff0000);
+                FlxG.play(SndWrong, .7);
                 incorrect_count++;
             }
             this.scoreText.text = correct_count + "/" + incorrect_count;
@@ -164,7 +172,7 @@ package
 
         public function advance():void {
             autoBox.erase();
-            time_bar.set_time(cur_timelimit - 22);
+            time_bar.set_time(cur_timelimit - 26);
             if (this.lines.poem_counter == this.lines.poem_lines.length) {
                 time_bar.running = false;
                 end_time = this.frame_lifetime;

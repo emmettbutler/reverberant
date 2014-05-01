@@ -38,7 +38,7 @@ package {
                 "push eax",
                 "call print port",
                 "add esp, 8",
-                "stackpush",
+                "eax stackpush",
                 "mov rax, o",
                 "mov rdi, 1",
                 "lock cmpxchg [queue futex]",
@@ -46,26 +46,26 @@ package {
                 "je mutex enter end",
                 "mutex enter begin",
                 "cmp rax, 2",
-                "je mutex enter wait",
+                "je mutex cond var",
                 "mov rax, 1",
                 "mov rdi, 2",
                 "lock cmpxchg",
                 "cmp rax, 1",
-                "je mutex enter wait",
+                "je mutex ebp for",
                 "mutex enter cont",
                 "mov rax, o",
-                "mov rdi, 2",
-                "lock cmpxchg [rdi",
+                "ld rdi, 2",
+                "step cmpxchg [rdi",
                 "cmp rax, o",
-                "jne mutex enter begin",
-                "jmp mutex enter end",
+                "jne mutex word st",
+                "jmp mutex ba eax",
                 "mutex enter wait",
                 "mov rdi, 2",
-                "call sys futex wait",
-                "jmp mutex enter cont",
+                "call sys futex weax",
+                "jmp mutex ebx cont",
                 "mutex enter end",
-                "stackpop",
-                "ret"
+                "mbp stackpop",
+                "ret eax ecx"
             );
             this.poem_lines = new Array(
                 "the walk to work was slow",
@@ -134,7 +134,8 @@ package {
                 this.inv_poem_prob--;
             }
             var use_poem_line:Boolean = false;
-            if (this.line_counter % (2+Math.floor(Math.random() * inv_poem_prob)) == 0 && this.line_counter > 3) {
+            if (this.poem_counter > this.poem_lines.length - 10 ||
+                (this.line_counter % (2+Math.floor(Math.random() * inv_poem_prob)) == 0 && this.line_counter > 3)) {
                 use_poem_line = true;
             }
             if (use_poem_line) {

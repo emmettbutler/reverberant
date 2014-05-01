@@ -89,10 +89,12 @@ package
             var char:String = "";
             if (name == "BACKSPACE") {
                 FlxG.state.remove(lastChar);
-                if (printed_string.length != 0 && lastChar != null && lastChar.prev != null) {
+                if (printed_string.length > 1 && lastChar != null && lastChar.prev != null) {
                     lastChar = lastChar.prev;
                     printPos.x = lastChar.x + charWidth;
                     printPos.y = lastChar.y;
+                } else if (printed_string.length <= 1) {
+                    this.erase();
                 }
                 printed_string = printed_string.slice(0, -1);
             } else if (name == "ENTER") {

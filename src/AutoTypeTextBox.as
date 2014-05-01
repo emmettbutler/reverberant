@@ -40,6 +40,8 @@ package {
                     this.pressKey(this.toType.charAt(this.charCounter));
                     if (this.charCounter < this.toType.length) {
                         this.charCounter++;
+                    } else {
+                        this.running = false;
                     }
                 }
             }

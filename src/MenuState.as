@@ -23,6 +23,26 @@ package
             notification = new Notification(new FlxPoint(0, FlxG.height-40), "");
             add(notification);
 
+            var box_shadow:FlxSprite = new FlxSprite((FlxG.width/2-100)+5, (FlxG.height/2-105)+5);
+            box_shadow.makeGraphic(205, 55, 0xff555555);
+            add(box_shadow);
+            var box:FlxSprite = new FlxSprite(FlxG.width/2-100, FlxG.height/2-105);
+            box.makeGraphic(205, 55, 0xff999999);
+            add(box);
+
+            var header:FlxText = new StaticTextBox(new FlxPoint(0, FlxG.height/2-100), FlxG.width,
+                                          "INSERT TITLE HERE");
+            header.color = 0xffffffff;
+            header.size = 20;
+            header.alignment = "center";
+            add(header);
+
+            var byline:FlxText = new StaticTextBox(new FlxPoint(0, FlxG.height/2-70), FlxG.width,
+                                          "BY EMMETT BUTLER");
+            byline.color = 0xffffffff;
+            byline.alignment = "center";
+            add(byline);
+
             titleText = new StaticTextBox(new FlxPoint(0, FlxG.height/2), FlxG.width,
                                           "PLEASE ENTER YOUR USERNAME");
             titleText.color = 0xffffffff;
@@ -37,7 +57,7 @@ package
             textInner.makeGraphic(200-6, 23-6, 0xff0000ff);
             add(textInner);
 
-            textBox = new TextInputBox(new FlxPoint(FlxG.width/2-88, FlxG.height/2+33), 260, null);
+            textBox = new TextInputBox(new FlxPoint(FlxG.width/2-88, FlxG.height/2+34), 240, null);
             textBox.enterCallback = this.enterCallback;
             textBox.erase();
             textBox.allows_linebreaks = false;
