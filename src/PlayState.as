@@ -112,6 +112,22 @@ package
             add(dbgText);
         }
 
+        public function updateTitleText():void {
+            if (this.lines.poem_counter > 40) {
+                titleText.text = "  E     NG        ";
+                instText.text = "T pe t   pr   t  ext b f  e t me r  s o t a   pr     n er.\n o p ny   l cy pr h bit  y u    m         so    re b gs.";
+            } else if (this.lines.poem_counter > 30) {
+                titleText.text = "E ER    NG I  F   ";
+                instText.text = "T pe t   pr   t  ext b fore t me r  s o t and pr     n er.\nComp ny   l cy pr hibit  you f om   i   g so    re b gs.";
+            } else if (this.lines.poem_counter > 20) {
+                titleText.text = "E ER  H NG IS FI E";
+                instText.text = "T pe t   pr   t  ext b fore t me runs o t and press  n er.\nComp ny   l cy pr hibit  you from wri   g so    re b gs.";
+            } else if (this.lines.poem_counter > 10) {
+                titleText.text = "EVER  HING IS FI E";
+                instText.text = "Type the prompt  ext b fore t me runs o t and press  n er.\nComp ny   l cy pr hibit  you from writing software b gs.";
+            }
+        }
+
         public function enterCallback(content:String):void {
             if (this.end_time != 0) return;
             if (this.autoBox.running) return;
@@ -149,6 +165,7 @@ package
             //this.print_debug();
 
             super.update();
+            this.updateTitleText();
             textBox.update();
             autoBox.update();
             time_bar.update();
