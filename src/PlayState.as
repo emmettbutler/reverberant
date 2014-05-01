@@ -6,6 +6,7 @@ package
         public var textBox:TextInputBox;
         public var autoBox:AutoTypeTextBox;
         public var lines:LineGenerator;
+        public var notification:Notification;
 
         public var time_bar:TimeCounter;
 
@@ -26,6 +27,9 @@ package
             FlxG.bgColor = 0xffbbbbbb;
 
             lines = new LineGenerator();
+
+            notification = new Notification("");
+            add(notification);
 
             textBox = new TextInputBox(new FlxPoint(10, 50), 600, lines);
             textBox.enterCallback = this.enterCallback;
@@ -54,9 +58,11 @@ package
             textBox.erase();
             if (content == autoBox.printed_string) {
                 autoBox.typeString("   GOOD");
+                notification.set_note("GOOD", 0xff00ff00);
                 correct_count++;
             } else {
                 autoBox.typeString("   BUG");
+                notification.set_note("BUG", 0xffff0000);
                 incorrect_count++;
             }
             this.scoreText.text = correct_count + "/" + incorrect_count;
@@ -71,10 +77,13 @@ package
             this.lines.poem_counter++;
         }
 
-        override public function update():void{
-            dbgText.text = "running: " + autoBox.running + "\ncharCounter: " + autoBox.charCounter + "\ntoType: " + autoBox.toType + "\nframes: " + autoBox.frame_lifetime + "\norigin: " + autoBox.origin.x + "," + autoBox.origin.y + "\nprinted: " + autoBox.printed_string + "\ntimeout_time: " + this.timeout_time + "\nuse_poem_line: " + this.textBox.use_poem_line + "\ncurrent_poem_line: " + this.textBox.current_poem_line;
+        public function print_debug():void {
+            dbgText.text = "running: " + autoBox.running + "\ncharCounter: " + autoBox.charCounter + "\ntoType: " + autoBox.toType + "\nframes: " + autoBox.frame_lifetime + "\norigin: " + autoBox.origin.x + "," + autoBox.origin.y + "\nprinted: " + autoBox.printed_string + "\ntimeout_time: " + this.timeout_time + "\nuse_poem_line: " + this.textBox.use_poem_line + "\ncurrent_poem_line: " + this.textBox.current_poem_line + "\npoem counter: " + this.lines.poem_counter;
+        }
 
+        override public function update():void{
             this.frame_lifetime++;
+            //this.print_debug();
 
             super.update();
             textBox.update();
@@ -97,16 +106,14 @@ package
             time_bar.set_time(cur_timelimit - 12);
 
             if (this.lines != null){
-                if (this.lines.poem_counter > 35) {
+                if (this.lines.poem_counter > 42) {
+                    this.textBox.use_poem_line = Math.floor(Math.random() * 5) == 1;
+                } else if (this.lines.poem_counter > 35) {
                     this.textBox.use_poem_line = true;
                 } else if (this.lines.poem_counter > 25) {
-                    if(Math.floor(Math.random() * 3) == 1) {
-                        this.textBox.use_poem_line = true;
-                    }
+                    this.textBox.use_poem_line = Math.floor(Math.random() * 3) == 1;
                 } else if (this.lines.poem_counter > 10) {
-                    if(Math.floor(Math.random() * 5) == 1) {
-                        this.textBox.use_poem_line = true;
-                    }
+                    this.textBox.use_poem_line = Math.floor(Math.random() * 5) == 1;
                 } else {
                     this.textBox.use_poem_line = false;
                 }
@@ -115,6 +122,8 @@ package
             }
             if (this.textBox.use_poem_line) {
                 this.textBox.current_poem_line = this.lines.get_next_poem_line().toUpperCase();
+            } else {
+                this.textBox.current_poem_line = "";
             }
         }
     }
