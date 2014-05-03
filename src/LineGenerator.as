@@ -120,8 +120,8 @@ package {
                 this.inv_poem_prob--;
             }
             var use_poem_line:Boolean = false;
-            if (this.line_counter == 3 || this.poem_counter > this.poem_lines.length - 10 ||
-                (this.line_counter % (2+Math.floor(Math.random() * inv_poem_prob)) == 0 && this.line_counter > 3)) {
+            if (this.line_counter == 4 || this.poem_counter > this.poem_lines.length - 10 ||
+                (this.line_counter % (2+Math.floor(Math.random() * inv_poem_prob)) == 0 && this.line_counter > 4)) {
                 use_poem_line = true;
             }
             if (use_poem_line) {
