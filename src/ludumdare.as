@@ -9,6 +9,7 @@ package
         public function ludumdare()
         {
             super(320,240,MenuState,2);
+            this.useSoundHotKeys = false;
         }
     }
 }

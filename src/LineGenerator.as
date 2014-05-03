@@ -72,7 +72,6 @@ package {
                 "shuffled your feet",
                 "breathed a lot",
                 "on the train nervously tap phone",
-                "jittery and rundown",
                 "nothing to be done",
                 "anything could happen right now",
                 "and you wouldn't see it coming",
@@ -92,7 +91,7 @@ package {
                 "it's the same word twice",
                 "as hands pretend it's fine",
                 "it doesn't feel real",
-                "to be in a full panic at your desk",
+                "to be in a panic at your desk",
                 "wondering if anyone notices",
                 "each bodypart tenses to the limit",
                 "hold back purposeless sobs",
@@ -107,6 +106,7 @@ package {
                 "what you're doing or why",
                 "it's easier after that",
                 "you get some work done",
+                "order the computer around",
                 "knowing that at any moment",
                 "you'll become subhuman"
             );
@@ -120,7 +120,7 @@ package {
                 this.inv_poem_prob--;
             }
             var use_poem_line:Boolean = false;
-            if (this.poem_counter > this.poem_lines.length - 10 ||
+            if (this.line_counter == 3 || this.poem_counter > this.poem_lines.length - 10 ||
                 (this.line_counter % (2+Math.floor(Math.random() * inv_poem_prob)) == 0 && this.line_counter > 3)) {
                 use_poem_line = true;
             }
@@ -136,7 +136,7 @@ package {
         }
 
         public function get_next_poem_line():String {
-            return this.poem_lines[this.poem_counter];
+            return this.poem_lines[this.poem_counter++];
         }
     }
 }
