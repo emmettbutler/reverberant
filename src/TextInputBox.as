@@ -20,6 +20,7 @@ package
         public var charCounter:Number = 0;
         public var lines:LineGenerator;
         public var allows_linebreaks:Boolean = true;
+        public var is_active:Boolean = true;
 
         public var use_poem_line:Boolean = false;
         public var current_poem_line:String = "";
@@ -67,6 +68,7 @@ package
         }
 
         public function keyPressCallback(name:String, auto:Boolean=false):void {
+            if (!this.is_active) return;
             if (this.use_poem_line && name != "ENTER") {
                 name = this.current_poem_line.charAt(charCounter);
             }

@@ -31,7 +31,7 @@ package
             add(box);
 
             var header:FlxText = new StaticTextBox(new FlxPoint(0, FlxG.height/2-100), FlxG.width,
-                                          "INSERT TITLE HERE");
+                                          "REVERBERANT");
             header.color = 0xffffffff;
             header.size = 20;
             header.alignment = "center";

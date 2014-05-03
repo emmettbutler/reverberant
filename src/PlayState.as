@@ -153,7 +153,6 @@ package
                 this.timeout_time = this.frame_lifetime;
             }
             this.textBox.complete();
-            this.lines.poem_counter++;
         }
 
         public function print_debug():void {
@@ -183,6 +182,7 @@ package
             }
 
             if (this.end_time != 0 && this.frame_lifetime - this.end_time > 260) {
+                this.textBox.is_active = false;
                 FlxG.switchState(new EndState(incorrect_count, player_name));
             }
         }
@@ -191,7 +191,7 @@ package
             autoBox.erase();
             cur_timelimit -= 2;
             time_bar.set_time(cur_timelimit);
-            if (this.lines.poem_counter == this.lines.poem_lines.length) {
+            if (this.lines.poem_counter >= this.lines.poem_lines.length) {
                 time_bar.running = false;
                 end_time = this.frame_lifetime;
                 return;
