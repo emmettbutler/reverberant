@@ -198,14 +198,17 @@ package
             }
             time_bar.running = true;
             this.timeout_time = 0;
-            autoBox.typeString(lines.get_next().toUpperCase());
+            var next:String = lines.get_next();
+            if (next != null) {
+                autoBox.typeString(next.toUpperCase());
+            }
 
             if (this.lines != null){
-                if (this.lines.poem_counter > 42) {
+                if (this.lines.poem_counter > 31) {
                     this.textBox.use_poem_line = Math.floor(Math.random() * 5) == 1;
-                } else if (this.lines.poem_counter > 35) {
-                    this.textBox.use_poem_line = true;
                 } else if (this.lines.poem_counter > 25) {
+                    this.textBox.use_poem_line = true;
+                } else if (this.lines.poem_counter > 13) {
                     this.textBox.use_poem_line = Math.floor(Math.random() * 3) == 1;
                 } else if (this.lines.poem_counter > 10) {
                     this.textBox.use_poem_line = Math.floor(Math.random() * 5) == 1;

@@ -73,34 +73,23 @@ package {
                 "breathed a lot",
                 "on the train nervously tap phone",
                 "jittery and rundown",
-                "uninterested in feeling anything else",
                 "nothing to be done",
-                "keep your mind off of the thoughts",
-                "that wouldn't stop no matter how",
-                "you wish they would",
-                "thinking",
                 "anything could happen right now",
                 "and you wouldn't see it coming",
                 "and that would be it for you",
                 "you made a cup of tea at work",
                 "breathing heavily",
-                "try to control the throat lump",
-                "thought it would calm you down",
-                "it didn't",
                 "having the internet",
                 "doesn't sound appealing",
                 "when it makes your heart pound",
-                "turns throat into a screaming machine",
                 "the feeling doesn't go away all day",
                 "focusing on work doesn't happen",
-                "type some things",
                 "distracting yourself from yourself",
                 "every once in a while",
                 "you remember the fear",
                 "typing a line",
                 "and the words aren't right",
                 "it's the same word twice",
-                "or a smudge from wrong keys",
                 "as hands pretend it's fine",
                 "it doesn't feel real",
                 "to be in a full panic at your desk",
@@ -111,17 +100,13 @@ package {
                 "of terror",
                 "get up hiding your face",
                 "walk quickly to the bathroom",
-                "close the door",
-                "lock it",
+                "lock the door",
                 "open the window",
                 "to the taut street",
-                "and scream silently to the buildings",
                 "with only a faint idea of",
                 "what you're doing or why",
                 "it's easier after that",
-                "for a little while",
                 "you get some work done",
-                "order the computer around",
                 "knowing that at any moment",
                 "you'll become subhuman"
             );
@@ -140,7 +125,11 @@ package {
                 use_poem_line = true;
             }
             if (use_poem_line) {
-                return this.poem_lines[this.poem_counter++];
+                var ret:String = this.poem_lines[this.poem_counter++];
+                if (ret == null) {
+                    return this.poem_lines[this.poem_lines.length - 1];
+                }
+                return ret;
             } else {
                 return this.normal_lines[Math.floor(Math.random() * this.normal_lines.length)]
             }
